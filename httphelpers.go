@@ -101,7 +101,9 @@ func (f *urlEncodedPayload) getValues() []keyValuePair {
 }
 
 func (r *httpResponse) parseFromJSON(v interface{}) error {
-	return json.Unmarshal(r.Data, v)
+	d := json.NewDecoder(bytes.NewBuffer(r.Data))
+	d.UseNumber()
+	return d.Decode(v)
 }
 
 func newFormDataPayload() *formDataPayload {
